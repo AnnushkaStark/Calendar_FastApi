@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import  Optional
 
-from database import Base
 from sqlalchemy.orm import Mapped ,mapped_column, relationship
 from sqlalchemy import (
     Column,
@@ -16,7 +15,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from calendar_app.constants import EventPriority, EventType
-from database import Base
+from calendar_app.database import Base
 
 
 class User(Base):
@@ -77,7 +76,7 @@ class Event(Base):
     )
     duration:  Mapped[datetime]
     description:  Mapped[Optional[str]]
-    owner_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    owner_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
     participants = relationship(
         "User",
         secondary=event_user_association,
@@ -95,10 +94,12 @@ class Comment(Base):
     - дата и время комментария
     - прокомментированное событие (event)
     """
+    __tablename__ = "comment" 
+    
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    author_id = Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
-    text = Mapped[str]
-    created_at = Mapped[datetime] = mapped_column(
+    author_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
+    text: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), index=True
     )
-    event_id = Mapped[int] = mapped_column(ForeignKey("event.id", ondelete="CASCADE"))
+    event_id: Mapped[Optional[int]]  = mapped_column(Integer,ForeignKey("event.id", ondelete="CASCADE"))
