@@ -40,10 +40,13 @@ class User(Base):
 event_user_association = Table(
     'event_user',
     Base.metadata,
-    Column('event_id', Integer, ForeignKey('event.id')),
-    Column('user_id', Integer, ForeignKey('user.id'))
+    Column(
+        "event_id", Integer, ForeignKey("event.id", ondelete="CASCADE")
+    ),
+    Column("user_id", Integer, ForeignKey("user.id", ondelete="CASCADE")),
 )
 
+    
 
 class Event(Base):
     """
@@ -92,7 +95,7 @@ class Event(Base):
         Integer,
         ForeignKey("user.id", ondelete="CASCADE")
     )
-    participants: Mapped[List[User]] = relationship(
+    participants: Mapped[list[User]] = relationship(
         "User",
         secondary=event_user_association
     )
