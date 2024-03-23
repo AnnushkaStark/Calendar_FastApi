@@ -97,6 +97,7 @@ class Event(Base):
     )
     participants: Mapped[list[User]] = relationship(
         "User",
+        back_populates="event",
         secondary=event_user_association
     )
 
