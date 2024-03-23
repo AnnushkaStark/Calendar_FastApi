@@ -14,7 +14,12 @@ from sqlalchemy import (
 ) 
 from sqlalchemy.orm import relationship
 
-from calendar_app.constants import EventPriority, EventType
+from calendar_app.constants import (
+    EventPriority,
+    EventType,
+    EventLocation,
+    EventRepitabilyty
+)
 from calendar_app.database import Base
 
 
@@ -65,8 +70,15 @@ class Event(Base):
     priority: Mapped[EventPriority] = mapped_column(
         Enum(EventPriority),
         default=EventPriority.without_priority
-    )  
-    event_location: Mapped[Optional[str]]
+    )
+    repeatability: Mapped[EventRepitabilyty] = mapped_column(
+        Enum(EventRepitabilyty),
+        default=EventRepitabilyty.no_repeats
+    )
+    event_location: Mapped[EventLocation] = mapped_column(
+        Enum(EventLocation),
+        default=EventLocation.other
+    )
     organizer: Mapped[Optional[str]]
     start_time: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), index=True
@@ -76,7 +88,10 @@ class Event(Base):
     )
     duration:  Mapped[datetime]
     description:  Mapped[Optional[str]]
-    owner_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
+    owner_id: Mapped[Optional[int]] = mapped_column(
+        Integer,
+        ForeignKey("user.id", ondelete="CASCADE")
+    )
     participants = relationship(
         "User",
         secondary=event_user_association,

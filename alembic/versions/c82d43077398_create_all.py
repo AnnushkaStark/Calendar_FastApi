@@ -1,8 +1,8 @@
-"""create all
+"""Create all
 
-Revision ID: aa0b34f1a1bd
-Revises: 2b8c1c05aea7
-Create Date: 2024-03-23 01:47:53.701394
+Revision ID: c82d43077398
+Revises: 
+Create Date: 2024-03-23 11:31:01.788517
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'aa0b34f1a1bd'
-down_revision: Union[str, None] = '2b8c1c05aea7'
+revision: str = 'c82d43077398'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -35,7 +35,8 @@ def upgrade() -> None:
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('event_type', sa.Enum('meeting', 'task', 'important_date', 'personal', 'no_category', name='eventtype'), nullable=False),
     sa.Column('priority', sa.Enum('important', 'requires_attention', 'without_priority', name='eventpriority'), nullable=False),
-    sa.Column('event_location', sa.String(), nullable=True),
+    sa.Column('repeatability', sa.Enum('every_day', 'every_week', 'every_month', 'no_repeats', name='eventrepitabilyty'), nullable=False),
+    sa.Column('event_location', sa.Enum('skype', 'zoom', 'goglemeet', 'telegram', 'b24', 'other', name='eventlocation'), nullable=False),
     sa.Column('organizer', sa.String(), nullable=True),
     sa.Column('start_time', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.Column('end_time', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
