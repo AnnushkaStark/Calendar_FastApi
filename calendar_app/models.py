@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import  Optional
+from typing import  Optional, List
 
 from sqlalchemy.orm import Mapped ,mapped_column, relationship
 from sqlalchemy import (
@@ -92,12 +92,12 @@ class Event(Base):
         Integer,
         ForeignKey("user.id", ondelete="CASCADE")
     )
-    participants = relationship(
+    participants: Mapped[List[User]] = relationship(
         "User",
-        secondary=event_user_association,
-        back_populates="events"
+        secondary=event_user_association
     )
 
+  
 
 class Comment(Base):
     """
