@@ -1,4 +1,3 @@
-
 from typing import Generator
 
 import pytest_asyncio
@@ -6,29 +5,29 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from databases.database import Base, async_engine
-from main import app, startup
+from calendar_app.database import Base, engine
+from calendar_app.main import app
 
 from .fixtures import *
 
 @pytest_asyncio.fixture
 async def async_session() -> AsyncSession:
     session = sessionmaker(
-        async_engine,
+        engine,
         class_=AsyncSession,
         expire_on_commit=False,
     )
 
     async with session() as s:
-        async with async_engine.begin() as conn:
+        async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
 
         yield s
 
-    async with async_engine.begin() as conn:
+    async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 
-    await async_engine.dispose()
+    await engine.dispose()
 
 
 

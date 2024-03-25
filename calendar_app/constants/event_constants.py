@@ -1,5 +1,9 @@
 import enum
 
+MIN_LENGTH_TITLE = 3
+MAX_LENGTH_TITLE = 3
+MAX_LENGTH_DESRIPTION = 1500
+
 
 class EventType(enum.StrEnum):
     """

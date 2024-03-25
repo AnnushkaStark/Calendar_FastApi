@@ -4,16 +4,17 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import AsyncEngine
-from calendar_app.models import Base
-#from calendar_app.models import *
-
- 
+from calendar_app.database import Base
+from calendar_app.models.user_model import User
+from calendar_app.models.event_model import *
+from calendar_app.models.m2m import *
+from calendar_app.models.comment_model import Comment
 from alembic import context
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-#config.set_main_option("sqlalchemy.url")
+config.set_main_option("SQLALCHEMY_DATABASE_URl", "sqlite+aiosqlite:///./calendar.db" )
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

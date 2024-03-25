@@ -1,8 +1,8 @@
-"""create all
+"""Create all
 
-Revision ID: 192bf3f9143a
+Revision ID: a4c1fc002c4b
 Revises: 
-Create Date: 2024-03-23 15:06:05.034940
+Create Date: 2024-03-26 01:06:18.071436
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '192bf3f9143a'
+revision: str = 'a4c1fc002c4b'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -40,9 +40,9 @@ def upgrade() -> None:
     sa.Column('organizer', sa.String(), nullable=True),
     sa.Column('start_time', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.Column('end_time', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('duration', sa.DateTime(), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['owner_id'], ['user.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
